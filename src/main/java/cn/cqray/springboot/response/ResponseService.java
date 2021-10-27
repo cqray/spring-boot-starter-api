@@ -2,10 +2,8 @@ package cn.cqray.springboot.response;
 
 import cn.cqray.springboot.ApiConfiguration;
 import cn.cqray.springboot.ApiConstants;
-import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -43,9 +41,9 @@ public class ResponseService {
         String code = apiConfiguration.getResponseDataConfig().getSuccessCode();
         String message = apiConfiguration.getResponseDataConfig().getSuccessMessage();
         Object page = null;
-        if (data instanceof List) {
-            page = new PageInfo<>((List<?>)data);
-        }
+//        if (data instanceof List) {
+//            page = new PageInfo<>((List<?>)data);
+//        }
         throw new ResponseException(code, message, data, page);
     }
 
