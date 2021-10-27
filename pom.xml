@@ -13,26 +13,26 @@
 
     <groupId>cn.cqray.springboot</groupId>
     <artifactId>spring-boot-starter-api</artifactId>
-    <version>0.0.6</version>
+    <version>0.0.7</version>
 
     <properties>
         <java.version>1.8</java.version>
         <start-class>com.xx.webapps.api.main.WebappsApiBidMain</start-class>
     </properties>
 
-<!--    <licenses>-->
-<!--        <license>-->
-<!--            <name>The MIT License (MIT)</name>-->
-<!--            <url>https://github.com/pagehelper/pagehelper-boot-starter/blob/master/LICENSE</url>-->
-<!--        </license>-->
-<!--    </licenses>-->
+    <licenses>
+        <license>
+            <name>The MIT License (MIT)</name>
+            <url>https://github.com/pagehelper/pagehelper-boot-starter/blob/master/LICENSE</url>
+        </license>
+    </licenses>
 
-<!--    <developers>-->
-<!--        <developer>-->
-<!--            <name>abel533</name>-->
-<!--            <email>abel533@gmail.com</email>-->
-<!--        </developer>-->
-<!--    </developers>-->
+    <developers>
+        <developer>
+            <name>abel533</name>
+            <email>abel533@gmail.com</email>
+        </developer>
+    </developers>
 
     <scm>
         <connection>scm:git:git@github.com:cqray/spring-boot-starter-api.git</connection>
