@@ -12,8 +12,8 @@
     </parent>
 
     <groupId>cn.cqray.springboot</groupId>
-    <artifactId>spring-boot-starter-api</artifactId>
-    <version>0.0.7</version>
+    <artifactId>api</artifactId>
+    <version>0.1.0</version>
 
     <properties>
         <java.version>1.8</java.version>
@@ -70,26 +70,6 @@
             <scope>provided</scope>
         </dependency>
 
-
-
-<!--        // Mybatis数据库分页查询-->
-<!--        //compile 'com.github.pagehelper:pagehelper:5.2.1'-->
-<!--        compile 'com.github.pagehelper:pagehelper-spring-boot-starter:1.2.3'-->
-<!--        // 注解自动配置-->
-<!--        compile 'org.springframework.boot:spring-boot-autoconfigure'-->
-<!--        // spring boot-->
-<!--        compileOnly 'org.springframework.boot:spring-boot-starter-web'-->
-<!--        // Redis-->
-<!--        compileOnly 'org.springframework.boot:spring-boot-starter-data-redis'-->
-<!--        // 验证-->
-<!--        compileOnly 'org.springframework.boot:spring-boot-starter-validation'-->
-<!--        // 注解-->
-<!--        compileOnly 'org.jetbrains:annotations:20.1.0'-->
-<!--        // Lombok框架-->
-<!--        compileOnly 'org.projectlombok:lombok'-->
-<!--        annotationProcessor 'org.projectlombok:lombok'-->
-<!--        // Swagger核心框架-->
-<!--        compileOnly 'io.springfox:springfox-swagger2:2.9.2'-->
     </dependencies>
 
     <profiles>
@@ -176,5 +156,6 @@
             </plugin>
         </plugins>
     </build>
+
 
 </project>
