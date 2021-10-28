@@ -11,13 +11,16 @@
         <relativePath/>
     </parent>
 
-    <groupId>cn.cqray.springboot</groupId>
-    <artifactId>api</artifactId>
-    <version>0.1.5</version>
+    <groupId>com.github.cqray</groupId>
+    <artifactId>spring-boot-starter-api</artifactId>
+    <version>0.1.7</version>
 
     <properties>
         <java.version>1.8</java.version>
         <start-class>com.xx.webapps.api.main.WebappsApiBidMain</start-class>
+
+        <!-- dependencies -->
+        <spring-boot.version>2.3.7.RELEASE</spring-boot.version>
     </properties>
 
     <licenses>
@@ -35,9 +38,9 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git@github.com:cqray/spring-boot-starter-api.git</connection>
-        <developerConnection>scm:git:git@github.com:cqray/spring-boot-starter-api.git</developerConnection>
-        <url>git@github.com:cqray/spring-boot-starter-api.git</url>
+        <connection>scm:git:git@github.com/cqray/spring-boot-starter-api.git</connection>
+        <developerConnection>scm:git:git@github.com/cqray/spring-boot-starter-api.git</developerConnection>
+        <url>git@github.com/cqray/spring-boot-starter-api.git</url>
     </scm>
 
 
@@ -45,23 +48,31 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <version>2.5.4</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
+            <version>2.5.4</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
+            <version>2.5.4</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
+            <version>2.5.4</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>1.18.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -72,12 +83,44 @@
         </dependency>
 
     </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <profiles>
         <profile>
             <id>release</id>
             <build>
                 <plugins>
+                    <!--Compiler-->
+                    <plugin>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <configuration>
+                            <source>1.8</source>
+                            <target>1.8</target>
+                        </configuration>
+                    </plugin>
+                    <!-- Source -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
                     <!-- Javadoc -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
