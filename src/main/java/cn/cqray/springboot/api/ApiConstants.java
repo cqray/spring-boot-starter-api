@@ -1,4 +1,4 @@
-package cn.cqray.springboot;
+package cn.cqray.springboot.api;
 
 /**
  * 常量类

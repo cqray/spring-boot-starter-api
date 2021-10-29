@@ -1,4 +1,4 @@
-package cn.cqray.springboot.redis;
+package cn.cqray.springboot.api.redis;
 
 /**
  * Redis带锁

@@ -1,9 +1,10 @@
-package cn.cqray.springboot.response;
+package cn.cqray.springboot.api.response;
 
-import cn.cqray.springboot.ApiConfiguration;
-import cn.cqray.springboot.ApiConstants;
+import cn.cqray.springboot.api.ApiConfiguration;
+import cn.cqray.springboot.api.ApiConstants;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -44,6 +45,10 @@ public class ResponseService {
 //        if (data instanceof List) {
 //            page = new PageInfo<>((List<?>)data);
 //        }
+        ResponseDataPageProvider pageProvider = apiConfiguration.getResponseDataConfig().getPageProvider();
+        if (pageProvider != null) {
+            page = pageProvider.getPage((List<?>) data);
+        }
         throw new ResponseException(code, message, data, page);
     }
 

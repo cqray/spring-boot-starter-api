@@ -1,8 +1,8 @@
-package cn.cqray.springboot.redis;
+package cn.cqray.springboot.api.redis;
 
-import cn.cqray.springboot.ApiConfig;
-import cn.cqray.springboot.ApiConfiguration;
-import cn.cqray.springboot.ApiConstants;
+import cn.cqray.springboot.api.ApiConfig;
+import cn.cqray.springboot.api.ApiConfiguration;
+import cn.cqray.springboot.api.ApiConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.connection.DataType;

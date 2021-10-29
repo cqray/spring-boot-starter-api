@@ -1,6 +1,6 @@
-package cn.cqray.springboot;
+package cn.cqray.springboot.api;
 
-import cn.cqray.springboot.response.ResponseDataConfig;
+import cn.cqray.springboot.api.response.ResponseDataConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

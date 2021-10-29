@@ -1,7 +1,7 @@
-package cn.cqray.springboot.filter;
+package cn.cqray.springboot.api.filter;
 
-import cn.cqray.springboot.ApiConfiguration;
-import cn.cqray.springboot.ApiConstants;
+import cn.cqray.springboot.api.ApiConfiguration;
+import cn.cqray.springboot.api.ApiConstants;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;

@@ -1,6 +1,6 @@
-package cn.cqray.springboot.redis;
+package cn.cqray.springboot.api.redis;
 
-import cn.cqray.springboot.ApiConstants;
+import cn.cqray.springboot.api.ApiConstants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;

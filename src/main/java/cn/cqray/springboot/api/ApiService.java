@@ -1,7 +1,10 @@
-package cn.cqray.springboot;
+package cn.cqray.springboot.api;
 
-import cn.cqray.springboot.redis.RedisService;
-import cn.cqray.springboot.response.ResponseService;
+import cn.cqray.springboot.api.dto.PageDto;
+import cn.cqray.springboot.api.redis.RedisService;
+import cn.cqray.springboot.api.response.ResponseService;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.stereotype.Service;
@@ -9,39 +12,47 @@ import org.springframework.stereotype.Service;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
-import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 /**
- * Hotchpotch总的服务
+ * Api开发总服务
  * @author Cqray
  */
+
 @Service(value = ApiConstants.SERVICE_API)
+@AllArgsConstructor
 public class ApiService {
 
-    private final Validator validator;
+    /** Redis服务 **/ @Getter
     private final RedisService redisService;
+    /** 接口响应服务 **/ @Getter
     private final ResponseService responseService;
+    /** 接口参数验证 **/
+    private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
-    public ApiService(RedisService redisService, ResponseService responseService) {
-        this.redisService = redisService;
-        this.responseService = responseService;
-        this.validator = Validation.buildDefaultValidatorFactory().getValidator();
-    }
-
-    public RedisService getRedisService() {
-        return redisService;
-    }
-
-    public ResponseService getResponseService() {
-        return responseService;
-    }
-
+    /**
+     * 接口参数验证
+     * @param object 要验证的对象
+     * @param groups 要验证的分组
+     */
     public void validate(Object object, Class<?>... groups) {
+        // 检查验证参数
         if (object == null) {
-            fail("对象为Null");
+            fail("参数对象为Null");
             return;
+        }
+        // 验证分页信息
+        if (object instanceof PageDto) {
+            PageDto dto = (PageDto) object;
+            if (dto.isPageable()) {
+                if (dto.getPageNum() == null) {
+                    fail("分页页码不能为空");
+                    return;
+                }
+                if (dto.getPageSize() == null) {
+                    fail("分页大小不能为空");
+                }
+            }
         }
         Set<ConstraintViolation<Object>> constraintViolations = validator.validate(object, groups);
         if (!constraintViolations.isEmpty()) {
@@ -125,3 +136,4 @@ public class ApiService {
         return redisService.getList();
     }
 }
+

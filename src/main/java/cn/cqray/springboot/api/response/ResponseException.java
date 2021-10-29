@@ -1,4 +1,4 @@
-package cn.cqray.springboot.response;
+package cn.cqray.springboot.api.response;
 
 
 /**

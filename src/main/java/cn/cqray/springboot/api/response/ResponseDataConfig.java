@@ -1,6 +1,5 @@
-package cn.cqray.springboot.response;
+package cn.cqray.springboot.api.response;
 
-import lombok.Builder;
 import lombok.Getter;
 
 /**
@@ -22,7 +21,7 @@ public class ResponseDataConfig {
     private boolean showNull;
     private boolean enable;
     private Class<?> [] excludeClasses;
-    //private ResponseDataPageProvider pageProvider;
+    private ResponseDataPageProvider pageProvider;
 
     public ResponseDataConfig() {
         successCode = "200";
@@ -38,45 +37,10 @@ public class ResponseDataConfig {
         //pageProvider = null;
     }
 
-//    public String getSuccessCode() {
-//        return successCode;
-//    }
-//
-//    public String getFailureCode() {
-//        return failureCode;
-//    }
-//
-//    public String getSuccessMessage() {
-//        return successMessage;
-//    }
-//
-//    public String getFailureMessage() {
-//        return failureMessage;
-//    }
-//
-//    public String getCodeKey() {
-//        return codeKey;
-//    }
-//
-//    public String getDataKey() {
-//        return dataKey;
-//    }
-//
-//    public String getMessageKey() {
-//        return messageKey;
-//    }
-//
-//    public boolean isShowNull() {
-//        return showNull;
-//    }
-//
-//    public boolean isEnable() {
-//        return enable;
-//    }
-//
-//    public Class<?>[] getExcludeClasses() {
-//        return excludeClasses;
-//    }
+    public ResponseDataConfig pageProvider(ResponseDataPageProvider pageProvider) {
+        this.pageProvider = pageProvider;
+        return this;
+    }
 
     public ResponseDataConfig successCode(String code) {
         successCode = code;

@@ -1,6 +1,6 @@
-package cn.cqray.springboot.response;
+package cn.cqray.springboot.api.response;
 
-import cn.cqray.springboot.ApiConfiguration;
+import cn.cqray.springboot.api.ApiConfiguration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;

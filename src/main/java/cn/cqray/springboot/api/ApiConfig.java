@@ -1,4 +1,4 @@
-package cn.cqray.springboot;
+package cn.cqray.springboot.api;
 
 import lombok.Data;
 
