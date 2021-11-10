@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -41,13 +42,13 @@ public class RequestFilter implements Filter {
                          @NotNull final ServletResponse response,
                          @NotNull final FilterChain chain) throws IOException, ServletException {
         boolean useRequestFilter = hotchpotchConfiguration.getApiConfig().isUseRequestFilter();
-        if (useRequestFilter) {
+        if (!useRequestFilter || request instanceof MultipartHttpServletRequest) {
+            chain.doFilter(request, response);
+        } else  {
             // 防止流读取一次就失效
             HttpServletRequest httpServletRequest = (HttpServletRequest) request;
             ServletRequest requestWrapper = new HttpServletRequestWrapper2(httpServletRequest);
             chain.doFilter(requestWrapper, response);
-        } else {
-            chain.doFilter(request, response);
         }
     }
 
