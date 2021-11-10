@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -17,18 +16,18 @@ import java.io.*;
 import java.nio.charset.Charset;
 
 /**
- * 请求修饰过滤器，使ServletRequest可以反复读取
+ * API接口开发输入流修复过滤器
+ * 用于API接口开发，流只可以读取一次的问题修复。
  * @author Cqray
  */
 @Slf4j
 @Order(Integer.MIN_VALUE)
 @Component(value = ApiConstants.FILTER_REQUEST)
 @WebFilter(urlPatterns = "/**", filterName = ApiConstants.FILTER_REQUEST)
-public class RequestFilter implements Filter {
-
+public class ApiStreamFixFilter implements Filter {
     private final ApiConfiguration hotchpotchConfiguration;
 
-    public RequestFilter(ApiConfiguration hotchpotchConfiguration) {
+    public ApiStreamFixFilter(ApiConfiguration hotchpotchConfiguration) {
         this.hotchpotchConfiguration = hotchpotchConfiguration;
     }
 
@@ -41,11 +40,14 @@ public class RequestFilter implements Filter {
     public void doFilter(@NotNull final ServletRequest request,
                          @NotNull final ServletResponse response,
                          @NotNull final FilterChain chain) throws IOException, ServletException {
-        boolean useRequestFilter = hotchpotchConfiguration.getApiConfig().isUseRequestFilter();
-        if (!useRequestFilter || request instanceof MultipartHttpServletRequest) {
+        boolean fixApiStream = hotchpotchConfiguration.getApiConfig().isFixApiStream();
+        String jsonContentType = "application/json";
+        String contentType = request.getContentType();
+        if (!fixApiStream || contentType == null || !contentType.contains(jsonContentType)) {
+            // 不修复API输入流、ContentType为空、或者不是JSON传参则不做处理
             chain.doFilter(request, response);
         } else  {
-            // 防止流读取一次就失效
+            // 修复流读取一次就失效的问题
             HttpServletRequest httpServletRequest = (HttpServletRequest) request;
             ServletRequest requestWrapper = new HttpServletRequestWrapper2(httpServletRequest);
             chain.doFilter(requestWrapper, response);
@@ -56,7 +58,7 @@ public class RequestFilter implements Filter {
     public void destroy() {}
 
     private static String getClassName() {
-        return String.format("[请求全局过滤器][%s]", RequestFilter.class.getSimpleName());
+        return String.format("[请求全局过滤器][%s]", ApiStreamFixFilter.class.getSimpleName());
     }
 
     /**
