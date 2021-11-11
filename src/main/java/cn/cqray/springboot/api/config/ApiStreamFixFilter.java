@@ -1,4 +1,4 @@
-package cn.cqray.springboot.api.filter;
+package cn.cqray.springboot.api.config;
 
 import cn.cqray.springboot.api.ApiConfiguration;
 import cn.cqray.springboot.api.ApiConstants;
@@ -22,13 +22,14 @@ import java.nio.charset.Charset;
  */
 @Slf4j
 @Order(Integer.MIN_VALUE)
-@Component(value = ApiConstants.FILTER_REQUEST)
-@WebFilter(urlPatterns = "/**", filterName = ApiConstants.FILTER_REQUEST)
+@Component(value = ApiConstants.FILTER_FIX)
+@WebFilter(urlPatterns = "/**", filterName = ApiConstants.FILTER_FIX)
 public class ApiStreamFixFilter implements Filter {
-    private final ApiConfiguration hotchpotchConfiguration;
 
-    public ApiStreamFixFilter(ApiConfiguration hotchpotchConfiguration) {
-        this.hotchpotchConfiguration = hotchpotchConfiguration;
+    private final ApiConfiguration apiConfiguration;
+
+    public ApiStreamFixFilter(ApiConfiguration apiConfiguration) {
+        this.apiConfiguration = apiConfiguration;
     }
 
     @Override
@@ -40,7 +41,7 @@ public class ApiStreamFixFilter implements Filter {
     public void doFilter(@NotNull final ServletRequest request,
                          @NotNull final ServletResponse response,
                          @NotNull final FilterChain chain) throws IOException, ServletException {
-        boolean fixApiStream = hotchpotchConfiguration.getApiConfig().isFixApiStream();
+        boolean fixApiStream = apiConfiguration.getApiConfig().isFixApiStream();
         String jsonContentType = "application/json";
         String contentType = request.getContentType();
         if (!fixApiStream || contentType == null || !contentType.contains(jsonContentType)) {

@@ -28,14 +28,14 @@ import java.lang.reflect.Field;
 public class ResponseDataAdvice implements ResponseBodyAdvice<Object> {
 
     private final ObjectMapper objectMapper;
+    private final ApiConfiguration apiConfiguration;
     private final Field mtTypeField;
     private final Field mtSubtypeField;
-    final ApiConfiguration apiConfiguration;
 
     @SneakyThrows
-    public ResponseDataAdvice(ObjectMapper objectMapper, ApiConfiguration configuration) {
+    public ResponseDataAdvice(ObjectMapper objectMapper, ApiConfiguration apiConfiguration) {
         this.objectMapper = objectMapper;
-        this.apiConfiguration = configuration;
+        this.apiConfiguration = apiConfiguration;
         this.mtTypeField = MimeType.class.getDeclaredField("type");
         this.mtSubtypeField = MimeType.class.getDeclaredField("subtype");
         this.mtTypeField.setAccessible(true);
@@ -45,7 +45,7 @@ public class ResponseDataAdvice implements ResponseBodyAdvice<Object> {
 
     @Override
     public boolean supports(@NotNull MethodParameter methodParameter, @NotNull Class<? extends HttpMessageConverter<?>> aClass) {
-        return apiConfiguration.getResponseDataConfig().isEnable();
+        return apiConfiguration.getApiConfig().isResponseAdviceEnable();
     }
 
     @SneakyThrows
@@ -67,7 +67,7 @@ public class ResponseDataAdvice implements ResponseBodyAdvice<Object> {
             return ((ResponseData) o).getBody();
         }
         // 处理其他返回值，外层需包裹ResponseData
-        Class<?>[] classes = apiConfiguration.getResponseDataConfig().getExcludeClasses();
+        Class<?>[] classes = apiConfiguration.getApiConfig().getResponseExcludeClasses();
         if (classes != null) {
             // 如果有排除在外的类，则直接返回，不需要包裹在ResponseData内
             for (Class<?> cls : classes) {

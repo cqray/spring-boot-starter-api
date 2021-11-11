@@ -8,7 +8,10 @@ import lombok.Getter;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -23,6 +26,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class ApiService {
 
+    private final ApiConfiguration apiConfiguration;
     /** Redis服务 **/ @Getter
     private final RedisService redisService;
     /** 接口响应服务 **/ @Getter
@@ -58,6 +62,19 @@ public class ApiService {
         if (!constraintViolations.isEmpty()) {
             constraintViolations.forEach(o -> fail(o.getMessage()));
         }
+    }
+
+    public String getHeader(String s) {
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (requestAttributes == null) {
+            return null;
+        }
+        HttpServletRequest request = requestAttributes.getRequest();
+        return request.getHeader(s);
+    }
+
+    public String getToken() {
+        return getHeader(apiConfiguration.getApiConfig().getTokenKey());
     }
 
     public <T> T fail(String message) {

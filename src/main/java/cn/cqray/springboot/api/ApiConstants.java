@@ -21,6 +21,6 @@ public class ApiConstants {
     /** 框架配置名 **/
     public static final String CONFIGURATION_API = PREFIX + "ApiConfiguration";
     /** 请求过滤器 **/
-    public static final String FILTER_REQUEST = PREFIX + "RequestFilter";
+    public static final String FILTER_FIX = PREFIX + "FixFilter";
 
 }

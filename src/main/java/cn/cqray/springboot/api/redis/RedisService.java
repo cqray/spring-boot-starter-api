@@ -1,6 +1,5 @@
 package cn.cqray.springboot.api.redis;
 
-import cn.cqray.springboot.api.ApiConfig;
 import cn.cqray.springboot.api.ApiConfiguration;
 import cn.cqray.springboot.api.ApiConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +22,10 @@ public class RedisService {
 
     private RedisTemplate<String, Object> redisTemplate;
     private RedisLockService redisLockService;
-    private final ApiConfiguration hotchpotchConfiguration;
+    private final ApiConfiguration apiConfiguration;
 
     public RedisService(ApiConfiguration hotchpotchConfiguration) {
-        this.hotchpotchConfiguration = hotchpotchConfiguration;
+        this.apiConfiguration = hotchpotchConfiguration;
     }
 
     @Autowired(required = false)
@@ -175,9 +174,8 @@ public class RedisService {
     }
 
     public long getDefaultExpire() {
-        ApiConfig config = hotchpotchConfiguration.getApiConfig();
-        long time = config.getRedisExpireTime();
-        boolean useExpire = config.isRedisUseExpire();
+        long time = apiConfiguration.getApiConfig().getRedisExpireTime();
+        boolean useExpire = apiConfiguration.getApiConfig().isRedisUseExpire();
         return useExpire ? time : 0;
     }
 }

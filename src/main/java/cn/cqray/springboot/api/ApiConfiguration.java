@@ -1,6 +1,5 @@
 package cn.cqray.springboot.api;
 
-import cn.cqray.springboot.api.response.ResponseDataConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -15,8 +14,6 @@ public class ApiConfiguration {
 
     /** Starter配置 **/
     private volatile ApiConfig apiConfig;
-    /** ResponseData配置 **/
-    private volatile ResponseDataConfig responseDataConfig;
 
     /**
      * 获取用户的设置
@@ -25,15 +22,6 @@ public class ApiConfiguration {
     @Autowired(required = false)
     public void setApiConfig(ApiConfig apiConfig) {
         this.apiConfig = apiConfig;
-    }
-
-    /**
-     * 获取用户的设置
-     * @param responseDataConfig 配置
-     */
-    @Autowired(required = false)
-    public void setResponseDataConfig(ResponseDataConfig responseDataConfig) {
-        this.responseDataConfig = responseDataConfig;
     }
 
     /**
@@ -50,21 +38,5 @@ public class ApiConfiguration {
             }
         }
         return apiConfig;
-    }
-
-    /**
-     * 取ResponseData配置
-     * @return ResponseData配置对象
-     */
-    public ResponseDataConfig getResponseDataConfig() {
-        if (responseDataConfig == null) {
-            synchronized (ApiConfiguration.class) {
-                if (responseDataConfig == null) {
-                    // 用户没有设置，则使用默认配置
-                    responseDataConfig = new ResponseDataConfig();
-                }
-            }
-        }
-        return responseDataConfig;
     }
 }
