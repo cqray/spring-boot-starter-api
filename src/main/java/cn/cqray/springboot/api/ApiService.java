@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -99,6 +100,14 @@ public class ApiService {
 
     public <T> T succeed(Object data, String message) {
         return responseService.succeed(data, message);
+    }
+
+    public <T> T succeedWithPage(List<?> data) {
+        return responseService.succeedWithPage(data);
+    }
+
+    public <T> T succeedWithPage(List<?>  data, String message) {
+        return responseService.succeedWithPage(data, message);
     }
 
     public String lockCache(String key, String value, long timeout) {
