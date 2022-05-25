@@ -3,6 +3,7 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/'}
         maven { url 'https://jitpack.io' }
     }
 
@@ -19,7 +20,8 @@ apply plugin: 'io.spring.dependency-management'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-version = '0.0.2'
+group = 'cn.cqray'
+version = '0.2.4'
 
 dependencies {
 
@@ -28,8 +30,10 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-validation'
 
     compileOnly 'org.jetbrains:annotations:20.1.0'
-    compileOnly 'org.projectlombok:lombok:1.18.0'
     compileOnly 'io.swagger:swagger-annotations:1.5.21'
+    // Lombok框架
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
 }
 
 tasks.withType(JavaCompile) {
