@@ -20,7 +20,6 @@ apply plugin: 'io.spring.dependency-management'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-group = 'cn.cqray'
 version = '0.2.4'
 
 dependencies {
