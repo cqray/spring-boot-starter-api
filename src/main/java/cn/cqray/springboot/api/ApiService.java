@@ -24,7 +24,6 @@ import java.util.Set;
 @AllArgsConstructor
 public class ApiService {
 
-    private final ApiConfiguration apiConfiguration;
     /** 接口响应服务 **/ @Getter
     private final ResponseService responseService;
     /** 接口参数验证 **/
@@ -65,12 +64,16 @@ public class ApiService {
         if (requestAttributes == null) {
             return null;
         }
-        HttpServletRequest request = requestAttributes.getRequest();
-        return request.getHeader(s);
+        HttpServletRequest request = getRequest();
+        return request == null ? null : request.getHeader(s);
     }
 
-    public String getToken() {
-        return getHeader(apiConfiguration.getApiConfig().getTokenKey());
+    public HttpServletRequest getRequest() {
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (requestAttributes == null) {
+            return null;
+        }
+        return requestAttributes.getRequest();
     }
 
     public <T> T fail(String message) {

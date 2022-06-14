@@ -1,7 +1,6 @@
 package cn.cqray.springboot.api.response;
 
 import cn.cqray.springboot.api.ApiConfig;
-import cn.cqray.springboot.api.ApiConfiguration;
 import cn.cqray.springboot.api.ApiConstants;
 import org.springframework.stereotype.Service;
 
@@ -14,14 +13,14 @@ import java.util.List;
 @Service(value = ApiConstants.SERVICE_RESPONSE)
 public class ResponseService {
 
-    private final ApiConfiguration apiConfiguration;
+    private final ApiConfig apiConfig;
 
-    public ResponseService(ApiConfiguration apiConfiguration) {
-        this.apiConfiguration = apiConfiguration;
+    public ResponseService(ApiConfig apiConfig) {
+        this.apiConfig = apiConfig;
     }
 
     public <T> T fail(String message) {
-        String code = apiConfiguration.getApiConfig().getFailureCode();
+        String code = apiConfig.getFailureCode();
         throw new ResponseException(code, message);
     }
 
@@ -34,22 +33,20 @@ public class ResponseService {
     }
 
     public <T> T succeed(Object data) {
-        ApiConfig apiConfig = apiConfiguration.getApiConfig();
         String message = apiConfig.getSuccessMessage();
         return succeed(data, message);
     }
 
     public <T> T succeed(Object data, String message) {
-        String code = apiConfiguration.getApiConfig().getSuccessCode();
+        String code = apiConfig.getSuccessCode();
         throw new ResponseException(code, message, data);
     }
 
     public <T> T succeedWithPage(List<?> data) {
-        return succeedWithPage(data, apiConfiguration.getApiConfig().getSuccessMessage());
+        return succeedWithPage(data, apiConfig.getSuccessMessage());
     }
 
     public <T> T succeedWithPage(List<?> data, String message) {
-        ApiConfig apiConfig = apiConfiguration.getApiConfig();
         String code = apiConfig.getSuccessCode();
         Object page = null;
         ResponsePageProvider pageProvider = apiConfig.getPageProvider();
@@ -58,5 +55,4 @@ public class ResponseService {
         }
         throw new ResponseException(code, message, data, page);
     }
-
 }

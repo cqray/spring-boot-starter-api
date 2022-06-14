@@ -1,6 +1,6 @@
 package cn.cqray.springboot.api.response;
 
-import cn.cqray.springboot.api.ApiConfiguration;
+import cn.cqray.springboot.api.ApiConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -28,14 +28,14 @@ import java.lang.reflect.Field;
 public class ResponseDataAdvice implements ResponseBodyAdvice<Object> {
 
     private final ObjectMapper objectMapper;
-    private final ApiConfiguration apiConfiguration;
+    private final ApiConfig apiConfig;
     private final Field mtTypeField;
     private final Field mtSubtypeField;
 
     @SneakyThrows
-    public ResponseDataAdvice(ObjectMapper objectMapper, ApiConfiguration apiConfiguration) {
+    public ResponseDataAdvice(ObjectMapper objectMapper, ApiConfig apiConfig) {
         this.objectMapper = objectMapper;
-        this.apiConfiguration = apiConfiguration;
+        this.apiConfig = apiConfig == null ? new ApiConfig() : apiConfig;
         this.mtTypeField = MimeType.class.getDeclaredField("type");
         this.mtSubtypeField = MimeType.class.getDeclaredField("subtype");
         this.mtTypeField.setAccessible(true);
@@ -45,7 +45,7 @@ public class ResponseDataAdvice implements ResponseBodyAdvice<Object> {
 
     @Override
     public boolean supports(@NotNull MethodParameter methodParameter, @NotNull Class<? extends HttpMessageConverter<?>> aClass) {
-        return apiConfiguration.getApiConfig().isResponseAdviceEnable();
+        return apiConfig.isResponseAdviceEnable();
     }
 
     @SneakyThrows
@@ -67,7 +67,7 @@ public class ResponseDataAdvice implements ResponseBodyAdvice<Object> {
             return ((ResponseData) o).getBody();
         }
         // 处理其他返回值，外层需包裹ResponseData
-        Class<?>[] classes = apiConfiguration.getApiConfig().getResponseExcludeClasses();
+        Class<?>[] classes = apiConfig.getResponseExcludeClasses();
         if (classes != null) {
             // 如果有排除在外的类，则直接返回，不需要包裹在ResponseData内
             for (Class<?> cls : classes) {

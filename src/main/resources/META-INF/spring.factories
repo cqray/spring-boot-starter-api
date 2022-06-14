@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=cn.cqray.springboot.api.ApiConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=cn.cqray.springboot.api.ApiAutoConfiguration

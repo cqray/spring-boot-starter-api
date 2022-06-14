@@ -1,6 +1,6 @@
 package cn.cqray.springboot.api.config;
 
-import cn.cqray.springboot.api.ApiConfiguration;
+import cn.cqray.springboot.api.ApiConfig;
 import cn.cqray.springboot.api.ApiConstants;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -26,10 +26,10 @@ import java.nio.charset.Charset;
 @WebFilter(urlPatterns = "/**", filterName = ApiConstants.FILTER_FIX)
 public class ApiStreamFixFilter implements Filter {
 
-    private final ApiConfiguration apiConfiguration;
+    private boolean fixApiStream;
 
-    public ApiStreamFixFilter(ApiConfiguration apiConfiguration) {
-        this.apiConfiguration = apiConfiguration;
+    public ApiStreamFixFilter(ApiConfig apiConfig) {
+        fixApiStream = apiConfig == null || apiConfig.isFixApiStream();
     }
 
     @Override
@@ -41,7 +41,6 @@ public class ApiStreamFixFilter implements Filter {
     public void doFilter(@NotNull final ServletRequest request,
                          @NotNull final ServletResponse response,
                          @NotNull final FilterChain chain) throws IOException, ServletException {
-        boolean fixApiStream = apiConfiguration.getApiConfig().isFixApiStream();
         String jsonContentType = "application/json";
         String contentType = request.getContentType();
         if (!fixApiStream || contentType == null || !contentType.contains(jsonContentType)) {
