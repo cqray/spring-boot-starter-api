@@ -31,7 +31,7 @@ public class ResponseException extends RuntimeException {
     }
 
     public ResponseData getResponseData() {
-        return ResponseData.newResponseData(code, message, data, page);
+        return ResponseData.create(code, message, data, page);
     }
 
     public String getCode() {
@@ -45,5 +45,9 @@ public class ResponseException extends RuntimeException {
 
     public Object getData() {
         return data;
+    }
+
+    public Object getPage() {
+        return page;
     }
 }

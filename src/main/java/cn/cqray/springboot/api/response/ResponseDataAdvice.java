@@ -1,9 +1,7 @@
 package cn.cqray.springboot.api.response;
 
 import cn.cqray.springboot.api.ApiConfig;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.core.MethodParameter;
@@ -23,24 +21,20 @@ import java.lang.reflect.Field;
  * 返回值处理工具
  * @author Cqray
  */
-@Slf4j
 @RestControllerAdvice(annotations = RestController.class)
 public class ResponseDataAdvice implements ResponseBodyAdvice<Object> {
 
-    private final ObjectMapper objectMapper;
     private final ApiConfig apiConfig;
     private final Field mtTypeField;
     private final Field mtSubtypeField;
 
     @SneakyThrows
-    public ResponseDataAdvice(ObjectMapper objectMapper, ApiConfig apiConfig) {
-        this.objectMapper = objectMapper;
-        this.apiConfig = apiConfig == null ? new ApiConfig() : apiConfig;
+    public ResponseDataAdvice(ApiConfig apiConfig) {
+        this.apiConfig = apiConfig == null ? ApiConfig.builder().build(): apiConfig;
         this.mtTypeField = MimeType.class.getDeclaredField("type");
         this.mtSubtypeField = MimeType.class.getDeclaredField("subtype");
         this.mtTypeField.setAccessible(true);
         this.mtSubtypeField.setAccessible(true);
-        log.info("接口返回值处理器[ResponseDataAdvice]初始化成功");
     }
 
     @Override
@@ -60,7 +54,7 @@ public class ResponseDataAdvice implements ResponseBodyAdvice<Object> {
         if(o == null || o instanceof String) {
             mtTypeField.set(mediaType, "application");
             mtSubtypeField.set(mediaType, "json");
-            return objectMapper.writeValueAsString(ResponseData.succeed(o).getBody());
+            return ResponseData.succeed(o).getBody();
         }
         // 处理ResponseData类型返回值
         if (o instanceof ResponseData) {
@@ -83,5 +77,4 @@ public class ResponseDataAdvice implements ResponseBodyAdvice<Object> {
     public Object handle(@NotNull ResponseException exc) {
         return exc.getResponseData().getBody();
     }
-
 }

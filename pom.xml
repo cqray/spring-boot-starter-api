@@ -14,7 +14,7 @@
     <groupId>com.github.cqray</groupId>
     <artifactId>spring-boot-starter-api</artifactId>
     <name>spring-boot-starter-api</name>
-    <version>0.2.3</version>
+    <version>0.3.0</version>
 
     <properties>
         <java.version>1.8</java.version>
@@ -49,7 +49,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.0</version>
+            <version>1.18.4</version>
             <scope>provided</scope>
         </dependency>
         <!-- 注解 -->
