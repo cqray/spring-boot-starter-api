@@ -80,7 +80,7 @@ public class ApiService {
     }
 
     @Autowired(required = false)
-    void setApiConfig(ApiConfig apiConfig) {
+    public void setApiConfig(ApiConfig apiConfig) {
         this.apiConfig = apiConfig;
     }
 
