@@ -4,6 +4,7 @@ import cn.cqray.springboot.api.dto.PageDto;
 import cn.cqray.springboot.api.response.ResponseService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -25,7 +26,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class ApiService {
 
-    @Resource
+    /** 接口配置参数 **/
     private ApiConfig apiConfig;
     /** 接口响应服务 **/ @Getter
     private final ResponseService responseService;
@@ -77,6 +78,11 @@ public class ApiService {
             return null;
         }
         return requestAttributes.getRequest();
+    }
+
+    @Autowired(required = false)
+    void setApiConfig(ApiConfig apiConfig) {
+        this.apiConfig = apiConfig;
     }
 
     public ApiConfig getApiConfig() {
