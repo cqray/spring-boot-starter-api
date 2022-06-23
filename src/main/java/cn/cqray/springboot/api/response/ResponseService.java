@@ -1,7 +1,7 @@
 package cn.cqray.springboot.api.response;
 
-import cn.cqray.springboot.api.ApiConstants;
-import cn.cqray.springboot.api.ApiService;
+import cn.cqray.springboot.api.ApiAutoConfiguration;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,17 +10,17 @@ import java.util.List;
  * Response服务
  * @author Cqray
  */
-@Service(value = ApiConstants.SERVICE_RESPONSE)
+@Service(value = "Api_ResponseService")
 public class ResponseService {
 
-    private final ApiService apiService;
+    private final ApiAutoConfiguration configuration;
 
-    public ResponseService(ApiService apiService) {
-        this.apiService = apiService;
+    public ResponseService(@NotNull ApiAutoConfiguration configuration) {
+        this.configuration = configuration;
     }
 
     public <T> T fail(String message) {
-        String code = apiService.getApiConfig().getFailureCode();
+        String code = configuration.getApiConfig().getFailureCode();
         throw new ResponseException(code, message);
     }
 
@@ -33,23 +33,23 @@ public class ResponseService {
     }
 
     public <T> T succeed(Object data) {
-        String message = apiService.getApiConfig().getSuccessMessage();
+        String message = configuration.getApiConfig().getSuccessMessage();
         return succeed(data, message);
     }
 
     public <T> T succeed(Object data, String message) {
-        String code = apiService.getApiConfig().getSuccessCode();
+        String code = configuration.getApiConfig().getSuccessCode();
         throw new ResponseException(code, message, data);
     }
 
     public <T> T succeedWithPage(List<?> data) {
-        return succeedWithPage(data, apiService.getApiConfig().getSuccessMessage());
+        return succeedWithPage(data, configuration.getApiConfig().getSuccessMessage());
     }
 
     public <T> T succeedWithPage(List<?> data, String message) {
-        String code = apiService.getApiConfig().getSuccessCode();
+        String code = configuration.getApiConfig().getSuccessCode();
         Object page = null;
-        ResponsePageProvider pageProvider = apiService.getApiConfig().getPageProvider();
+        ResponsePageProvider pageProvider = configuration.getApiConfig().getPageProvider();
         if (pageProvider != null) {
             page = pageProvider.getPage(data);
         }

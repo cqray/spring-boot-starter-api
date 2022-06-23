@@ -3,7 +3,6 @@ package cn.cqray.springboot.api;
 import cn.cqray.springboot.api.dto.PageDto;
 import cn.cqray.springboot.api.response.ResponseService;
 import lombok.Getter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -20,11 +19,9 @@ import java.util.Set;
  * @author Cqray
  */
 
-@Service(value = ApiConstants.SERVICE_API)
+@Service(value = "Api_ApiService")
 public class ApiService {
 
-    /** 接口配置参数 **/
-    private volatile ApiConfig apiConfig;
     /** 接口响应服务 **/ @Getter
     private final ResponseService responseService;
     /** 接口参数验证 **/
@@ -79,22 +76,6 @@ public class ApiService {
             return null;
         }
         return requestAttributes.getRequest();
-    }
-
-    @Autowired(required = false)
-    void setApiConfig(ApiConfig apiConfig) {
-        this.apiConfig = apiConfig;
-    }
-
-    public ApiConfig getApiConfig() {
-        if (this.apiConfig == null) {
-            synchronized(ApiService.class) {
-                if (this.apiConfig == null) {
-                    this.apiConfig = ApiConfig.builder().build();
-                }
-            }
-        }
-        return this.apiConfig;
     }
 
     public <T> T fail(String message) {

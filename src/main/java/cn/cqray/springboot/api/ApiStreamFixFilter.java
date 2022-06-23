@@ -1,7 +1,5 @@
-package cn.cqray.springboot.api.config;
+package cn.cqray.springboot.api;
 
-import cn.cqray.springboot.api.ApiConstants;
-import cn.cqray.springboot.api.ApiService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -22,14 +20,14 @@ import java.nio.charset.Charset;
  */
 @Slf4j
 @Order(Integer.MIN_VALUE)
-@Component(value = ApiConstants.FILTER_FIX)
-@WebFilter(urlPatterns = "/**", filterName = ApiConstants.FILTER_FIX)
+@Component(value = "Api_ApiStreamFixFilter")
+@WebFilter(urlPatterns = "/**", filterName = "Api_ApiStreamFixFilter")
 public class ApiStreamFixFilter implements Filter {
 
-    private boolean fixApiStream;
+    final ApiAutoConfiguration configuration;
 
-    public ApiStreamFixFilter(@NotNull ApiService apiService) {
-        fixApiStream = apiService.getApiConfig().isFixApiStream();
+    public ApiStreamFixFilter(@NotNull ApiAutoConfiguration configuration) {
+        this.configuration = configuration;
     }
 
     @Override
@@ -43,6 +41,7 @@ public class ApiStreamFixFilter implements Filter {
                          @NotNull final FilterChain chain) throws IOException, ServletException {
         String jsonContentType = "application/json";
         String contentType = request.getContentType();
+        boolean fixApiStream = configuration.getApiConfig().isFixApiStream();
         if (!fixApiStream || contentType == null || !contentType.contains(jsonContentType)) {
             // 不修复API输入流、ContentType为空、或者不是JSON传参则不做处理
             chain.doFilter(request, response);
