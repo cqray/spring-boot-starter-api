@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -27,7 +26,7 @@ import java.util.Set;
 public class ApiService {
 
     /** 接口配置参数 **/
-    private ApiConfig apiConfig;
+    private volatile ApiConfig apiConfig;
     /** 接口响应服务 **/ @Getter
     private final ResponseService responseService;
     /** 接口参数验证 **/
@@ -86,8 +85,14 @@ public class ApiService {
     }
 
     public ApiConfig getApiConfig() {
-        apiConfig = apiConfig == null ? ApiConfig.builder().build() : apiConfig;
-        return apiConfig;
+        if (this.apiConfig == null) {
+            synchronized(ApiService.class) {
+                if (this.apiConfig == null) {
+                    this.apiConfig = ApiConfig.builder().build();
+                }
+            }
+        }
+        return this.apiConfig;
     }
 
     public <T> T fail(String message) {
