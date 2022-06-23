@@ -1,5 +1,6 @@
 package cn.cqray.springboot.api.response;
 
+import cn.cqray.springboot.api.ApiAutoConfiguration;
 import cn.cqray.springboot.api.ApiConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -22,7 +23,7 @@ public class ResponseData {
     /** 首个实例 **/
     private static transient volatile ResponseData firstInstance;
     /** 配置信息 **/
-    private transient ApiConfig apiConfig;
+    private transient ApiAutoConfiguration configuration;
     /** 格式转化工具 **/
     private transient ObjectMapper objectMapper;
     /** 数据内容 **/
@@ -39,13 +40,9 @@ public class ResponseData {
         }
     }
 
-    /**
-     * 设置配置信息，仅作用于首个实例
-     * @param apiConfig 配置信息
-     */
     @Autowired
-    void setApiConfig(ApiConfig apiConfig) {
-        this.apiConfig = apiConfig;
+    void setApiAutoConfiguration(ApiAutoConfiguration configuration) {
+        this.configuration = configuration;
     }
 
     /**
@@ -114,14 +111,6 @@ public class ResponseData {
      * 获取API相关配置，没有配置则使用默认
      */
     static ApiConfig getApiConfig() {
-        if (firstInstance.apiConfig == null) {
-            synchronized (ResponseData.class) {
-                if (firstInstance.apiConfig == null) {
-                    // 用户没有设置，则使用默认配置
-                    firstInstance.apiConfig = ApiConfig.builder().build();
-                }
-            }
-        }
-        return firstInstance.apiConfig;
+        return firstInstance.configuration.getApiConfig();
     }
 }

@@ -14,7 +14,7 @@
     <groupId>com.github.cqray</groupId>
     <artifactId>spring-boot-starter-api</artifactId>
     <name>spring-boot-starter-api</name>
-    <version>0.3.6</version>
+    <version>0.3.7</version>
 
     <properties>
         <java.version>1.8</java.version>
