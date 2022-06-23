@@ -1,7 +1,7 @@
 package cn.cqray.springboot.api.config;
 
-import cn.cqray.springboot.api.ApiConfig;
 import cn.cqray.springboot.api.ApiConstants;
+import cn.cqray.springboot.api.ApiService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -28,8 +28,8 @@ public class ApiStreamFixFilter implements Filter {
 
     private boolean fixApiStream;
 
-    public ApiStreamFixFilter(ApiConfig apiConfig) {
-        fixApiStream = apiConfig == null || apiConfig.isFixApiStream();
+    public ApiStreamFixFilter(@NotNull ApiService apiService) {
+        fixApiStream = apiService.getApiConfig().isFixApiStream();
     }
 
     @Override

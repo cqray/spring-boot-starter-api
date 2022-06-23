@@ -1,6 +1,6 @@
 package cn.cqray.springboot.api.response;
 
-import cn.cqray.springboot.api.ApiConfig;
+import cn.cqray.springboot.api.ApiService;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -24,13 +24,13 @@ import java.lang.reflect.Field;
 @RestControllerAdvice(annotations = RestController.class)
 public class ResponseDataAdvice implements ResponseBodyAdvice<Object> {
 
-    private final ApiConfig apiConfig;
+    private final ApiService apiService;
     private final Field mtTypeField;
     private final Field mtSubtypeField;
 
     @SneakyThrows
-    public ResponseDataAdvice(ApiConfig apiConfig) {
-        this.apiConfig = apiConfig == null ? ApiConfig.builder().build(): apiConfig;
+    public ResponseDataAdvice(ApiService apiService) {
+        this.apiService = apiService;
         this.mtTypeField = MimeType.class.getDeclaredField("type");
         this.mtSubtypeField = MimeType.class.getDeclaredField("subtype");
         this.mtTypeField.setAccessible(true);
@@ -39,7 +39,7 @@ public class ResponseDataAdvice implements ResponseBodyAdvice<Object> {
 
     @Override
     public boolean supports(@NotNull MethodParameter methodParameter, @NotNull Class<? extends HttpMessageConverter<?>> aClass) {
-        return apiConfig.isResponseAdviceEnable();
+        return apiService.getApiConfig().isResponseAdviceEnable();
     }
 
     @SneakyThrows
@@ -61,7 +61,7 @@ public class ResponseDataAdvice implements ResponseBodyAdvice<Object> {
             return ((ResponseData) o).getBody();
         }
         // 处理其他返回值，外层需包裹ResponseData
-        Class<?>[] classes = apiConfig.getResponseExcludeClasses();
+        Class<?>[] classes = apiService.getApiConfig().getResponseExcludeClasses();
         if (classes != null) {
             // 如果有排除在外的类，则直接返回，不需要包裹在ResponseData内
             for (Class<?> cls : classes) {

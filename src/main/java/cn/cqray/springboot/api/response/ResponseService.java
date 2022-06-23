@@ -1,7 +1,7 @@
 package cn.cqray.springboot.api.response;
 
-import cn.cqray.springboot.api.ApiConfig;
 import cn.cqray.springboot.api.ApiConstants;
+import cn.cqray.springboot.api.ApiService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,14 +13,14 @@ import java.util.List;
 @Service(value = ApiConstants.SERVICE_RESPONSE)
 public class ResponseService {
 
-    private final ApiConfig apiConfig;
+    private final ApiService apiService;
 
-    public ResponseService(ApiConfig apiConfig) {
-        this.apiConfig = apiConfig;
+    public ResponseService(ApiService apiService) {
+        this.apiService = apiService;
     }
 
     public <T> T fail(String message) {
-        String code = apiConfig.getFailureCode();
+        String code = apiService.getApiConfig().getFailureCode();
         throw new ResponseException(code, message);
     }
 
@@ -33,23 +33,23 @@ public class ResponseService {
     }
 
     public <T> T succeed(Object data) {
-        String message = apiConfig.getSuccessMessage();
+        String message = apiService.getApiConfig().getSuccessMessage();
         return succeed(data, message);
     }
 
     public <T> T succeed(Object data, String message) {
-        String code = apiConfig.getSuccessCode();
+        String code = apiService.getApiConfig().getSuccessCode();
         throw new ResponseException(code, message, data);
     }
 
     public <T> T succeedWithPage(List<?> data) {
-        return succeedWithPage(data, apiConfig.getSuccessMessage());
+        return succeedWithPage(data, apiService.getApiConfig().getSuccessMessage());
     }
 
     public <T> T succeedWithPage(List<?> data, String message) {
-        String code = apiConfig.getSuccessCode();
+        String code = apiService.getApiConfig().getSuccessCode();
         Object page = null;
-        ResponsePageProvider pageProvider = apiConfig.getPageProvider();
+        ResponsePageProvider pageProvider = apiService.getApiConfig().getPageProvider();
         if (pageProvider != null) {
             page = pageProvider.getPage(data);
         }
