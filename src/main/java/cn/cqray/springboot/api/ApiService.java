@@ -2,7 +2,6 @@ package cn.cqray.springboot.api;
 
 import cn.cqray.springboot.api.dto.PageDto;
 import cn.cqray.springboot.api.response.ResponseService;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +21,6 @@ import java.util.Set;
  */
 
 @Service(value = ApiConstants.SERVICE_API)
-@AllArgsConstructor
 public class ApiService {
 
     /** 接口配置参数 **/
@@ -31,6 +29,10 @@ public class ApiService {
     private final ResponseService responseService;
     /** 接口参数验证 **/
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+
+    public ApiService(ResponseService responseService) {
+        this.responseService = responseService;
+    }
 
     /**
      * 接口参数验证
@@ -80,7 +82,7 @@ public class ApiService {
     }
 
     @Autowired(required = false)
-    public void setApiConfig(ApiConfig apiConfig) {
+    void setApiConfig(ApiConfig apiConfig) {
         this.apiConfig = apiConfig;
     }
 
